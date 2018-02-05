@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
+import './common/less'
 
 Vue.use(ElementUI, { size: 'small' })
 
