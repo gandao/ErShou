@@ -5,8 +5,8 @@ import App from './App'
 import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
-import './common/less'
-
+import './common/less/index.less'
+import '../static/rest.css'
 Vue.use(ElementUI, { size: 'small' })
 
 axios.defaults.withCredentials = true

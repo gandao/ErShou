@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div class="content">
+    <div class="content">2131
       <router-view></router-view>
     </div>
-    <footer></footer>
+    <vfooter></vfooter>
   </div>
 </template>
 <script>
@@ -16,7 +16,7 @@ export default {
     }
   },
   components: {
-    footer: footer
+    vfooter: footer
   }
 }
 </script>
@@ -24,8 +24,10 @@ export default {
 #app{
   display: flex;
   flex-direction: column;
+  height: 100%;
   .content{
     flex: 1;
+    background: red;
   }
 }
 </style>

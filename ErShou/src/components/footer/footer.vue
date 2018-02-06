@@ -13,17 +13,23 @@ export default {
 }
 </script>
 <style lang="less"  type="text/less">
+@import '../../common/less/index.less';
 #footer{
     background: @main_color;
     color: #FFF;
     text-align: center;
     .big_title{
-        line-height: 40px;
-        font-size: @b2;
+        margin-top: 15px;
+        line-height: 25px;
+        font-size: @p3;
+        font-weight: bold;
+        letter-spacing: 1px;
     }
     .small_title{
-        line-height: 25px;
-        font-size: @p2;
+        margin-bottom: 10px;
+        line-height: 15px;
+        font-size: @min_size;
+        letter-spacing: 1px;
     }
 }
 </style>
