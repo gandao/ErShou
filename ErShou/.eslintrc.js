@@ -40,6 +40,7 @@ module.exports = {
         "no-irregular-whitespace": 0,
         "block-spacing": 0,
         "no-unused-vars": 0,
-        "no-labels": 0
+        "no-labels": 0,
+        "eol-last": 0
   }
 }

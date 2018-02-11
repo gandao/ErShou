@@ -38,9 +38,11 @@
      min-width: 1100px;
      height: 100%;
      margin: 0 auto;
-     background: #EBEBEB;
+     background: #EEF3FA;
  }
- 
+ body>div{
+     height: 100%;
+ }
  blockquote, q {
      quotes: none;
  }
@@ -57,7 +59,7 @@
 
  /* custom */
  a {
-     color: #7e8c8d;
+     color: green;
      text-decoration: none;
      -webkit-backface-visibility: hidden;
  }

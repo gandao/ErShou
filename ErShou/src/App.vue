@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="content">2131
+    <div class="content">
       <router-view></router-view>
     </div>
     <vfooter></vfooter>
@@ -12,7 +12,10 @@ export default {
   name: 'App',
   data() {
     return {
-      is_login: false
+      user_status: {
+        is_login: false
+      }
+      
     }
   },
   components: {
@@ -27,7 +30,7 @@ export default {
   height: 100%;
   .content{
     flex: 1;
-    background: red;
+
   }
 }
 </style>
