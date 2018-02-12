@@ -8,7 +8,7 @@
 "></i></span></a>
           </div>
           <div class="user_wrapper">
-              <div v-if="true" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img src="./user_head.jpg"/></span><span class="name">小李</span></div>
+              <div v-if="true" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img src="./user_head.jpg"/></span><span class="name">科里斯塔</span></div>
               <div v-else class="login_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><a href="#">登录/注册</a></div>
               <el-collapse-transition>
                 <div v-show="is_menu_show" class="menu_wrapper">
@@ -75,7 +75,7 @@ export default {
         .search_wrapper{
             flex: 1;
             color: @main_color;
-            text-align: center;
+            text-align: right;
             .title{
                 line-height: 53px;
                 font-size: @min_size;
@@ -116,7 +116,7 @@ export default {
             }
         }
         .user_wrapper{
-            flex: 0.8;
+            flex: 0.7;
             position: relative;
             .menu_wrapper{
                  z-index: 999;

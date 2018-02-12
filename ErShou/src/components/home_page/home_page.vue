@@ -41,9 +41,21 @@
             <div class="title">
                 <a class="selected" href="#">最想要的</a> / <a href="#">新品上市</a> / <a href="#">畅销品</a>
                 <span class="btn">
-                    <a class="selected" href="#"><i class="el-icon-arrow-left"></i></a>
+                    <a @click.stop.prevent="is_section_two_show = !is_section_two_show" class="selected" href="#"><i class="el-icon-arrow-left"></i></a>
                     <a href="#"><i class="el-icon-arrow-right"></i></a>
                 </span>
+            </div>
+            <div class="content">
+                <transition name = 'section_two'>
+                    <ul v-show="!is_section_two_show">
+                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                    </ul>
+                </transition>
+                <transition name = 'section_two'>
+                    <ul v-show="is_section_two_show" class="second">
+                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                    </ul>
+                </transition>
             </div>
         </div>
       </div>
@@ -55,12 +67,26 @@
                     <a class="more" href="#">更多<i class="el-icon-d-arrow-right"></i></a>
                 </span>
             </div>
+            <div class="content">
+                <ul>
+                    <li v-for='(item,index) in 8' :key="index"><good-item></good-item></li>
+                </ul>
+            </div>
         </div>
       </div>
   </div>
 </template>
 <script>
+import goods_item from "../goods_item/goods_item"
 export default {
+    data() {
+        return {
+            is_section_two_show: false
+        }
+    },
+    components: {
+        goodItem: goods_item
+    }
 }
 </script>
 <style lang="less"  type="text/less">
@@ -199,7 +225,7 @@ export default {
                     top: 0;
                     a{
                         display: inline-block;
-                        padding: 3px 5px;
+                        padding: 3px 4px;
                         border-radius: 1px;
                         color: #fff;
                         background-color: @main_color;
@@ -210,6 +236,35 @@ export default {
                         &:hover,&.selected{
                             background-color:@font_hover_color; 
                         }
+                    }
+                }
+            }
+            .content{
+                position: relative;
+                margin-top: 40px;
+                ul{
+                    display: flex;
+                    flex-direction: row;
+                    li{
+                        flex: 1;
+                    }
+                    &.section_two-enter-active,&.section_two-leave-active{
+                        transition: all 0.7s ease-in-out;
+                        // position: absolute;
+                    }
+                    &.section_two-enter-to,&.section_two-leave{
+                        transform: scale(1,1);
+                        opacity: 1;
+                    }
+                    &.section_two-enter,&.section_two-leave-to{
+                        transform: scale(0,0);
+                        opacity: 0;
+                    }
+                    &.section_two-leave,&.section_two-leave-active{
+                        position: absolute;
+                         top: 0;
+                        left: 0;
+                        width: 100%;
                     }
                 }
             }
@@ -251,6 +306,20 @@ export default {
                         &:hover{
                             background: @font_hover_color;
                         }
+                    }
+                }
+            }
+            .content{
+                position: relative;
+                margin-top: 40px;
+                margin-bottom: 20px;
+                ul{
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    li{
+                        flex: 1;
+                        margin-top: 20px;
                     }
                 }
             }
