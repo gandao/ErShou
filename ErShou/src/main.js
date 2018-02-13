@@ -8,7 +8,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './common/less/index.less'
 import '../static/rest.css'
-Vue.use(ElementUI, { size: 'small' })
+Vue.use(ElementUI, { size: 'medium' })
 
 axios.defaults.withCredentials = true
 Vue.prototype.$http = axios
