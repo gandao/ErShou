@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import main from '../components/main/main'
 import home_page from '../components/home_page/home_page'
 import goods_list from "../components/goods_list/goods_list"
+import log_in from "../components/log_in/log_in"
 Vue.use(Router)
 
 export default new Router({
@@ -21,9 +22,13 @@ export default new Router({
       }
     ]
     },
+    {
+      path: '/log_in',
+      component: log_in
+    },
     { 
       path: '/',
-      redirect: '/main/goods_list'
+      redirect: '/log_in'
     }
   ],
   mode: 'history'
