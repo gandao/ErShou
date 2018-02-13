@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <carouselfigure :img-data=img_data></carouselfigure>
+    <carouselfigure v-show="false" :img-data=img_data></carouselfigure>
     <vheader></vheader>
     <div class="main_content">
       <router-view></router-view>
