@@ -15,7 +15,6 @@ export default {
       user_status: {
         is_login: false
       }
-      
     }
   },
   components: {

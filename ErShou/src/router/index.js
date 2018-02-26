@@ -5,6 +5,9 @@ import home_page from '../components/home_page/home_page'
 import goods_list from "../components/goods_list/goods_list"
 import log_in from "../components/log_in/log_in"
 import goods_detail from "../components/goods_detail/goods_detail"
+import user_center from "../components/user_center/user_center"
+import user_goods from "../components/user_goods/user_goods"
+import user_collection from "../components/user_collection/user_collection"
 Vue.use(Router)
 
 export default new Router({
@@ -24,6 +27,20 @@ export default new Router({
       {
         path: 'goods_detail',
         component: goods_detail
+      },
+      {
+        path: 'user_center',
+        component: user_center,
+        children: [
+          {
+            path: 'user_goods',
+            component: user_goods
+          },
+          {
+            path: 'user_collection',
+            component: user_collection
+          }
+        ]
       }
     ]
     },
@@ -33,7 +50,7 @@ export default new Router({
     },
     { 
       path: '/',
-      redirect: '/main/goods_detail'
+      redirect: '/main/user_center/user_collection'
     }
   ],
   mode: 'history'
