@@ -18,27 +18,33 @@ export default new Router({
     children: [
       {
         path: 'home_page',
-        component: home_page
+        component: home_page,
+        name: "home_page"
       },
       {
         path: 'goods_list',
-        component: goods_list
+        component: goods_list,
+        name: "goods_list"
       },
       {
         path: 'goods_detail',
-        component: goods_detail
+        component: goods_detail,
+        name: 'goods_detail'
       },
       {
         path: 'user_center',
         component: user_center,
+        name: 'user_center',
         children: [
           {
             path: 'user_goods',
-            component: user_goods
+            component: user_goods,
+            name: 'user_goods'
           },
           {
             path: 'user_collection',
-            component: user_collection
+            component: user_collection,
+            name: "user_collection"
           }
         ]
       }
@@ -46,12 +52,16 @@ export default new Router({
     },
     {
       path: '/log_in',
-      component: log_in
+      component: log_in,
+      name: "log_in"
     },
     { 
       path: '/',
       redirect: '/main/user_center/user_collection'
     }
   ],
-  mode: 'history'
+  mode: 'history',
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })

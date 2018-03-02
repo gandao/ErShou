@@ -19,7 +19,7 @@
         <div class="btn">
           <span class="one"><a href="#">我要注册</a></span>|
           <span class="one second"><a href="#">忘记密码</a></span>
-          <span class="two"><a href="#">登录</a></span>
+          <span class="two" @click.stop.prevent="fun_log_in"><a href="#">登录</a></span>
         </div>
         <div class="logo">
           <span>账号</span>
@@ -31,7 +31,11 @@
 </template>
 <script>
 export default {
-   
+   methods: {
+     fun_log_in() {
+       this.$router.push({name: 'home_page'})
+     }
+   }
 }
 </script>
 <style lang="less"  type="text/less">

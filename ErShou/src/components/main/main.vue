@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <carouselfigure v-show="false" :img-data=img_data></carouselfigure>
+    <!-- <carouselfigure v-show="true" :img-data=img_data></carouselfigure> -->
     <vheader></vheader>
     <div class="main_content">
       <router-view></router-view>
@@ -13,7 +13,7 @@ import header from "../header/heade"
 export default {
   data() {
     return {
-      img_data: ["http://img2.niutuku.com/desk/1207/1016/ntk123817.jpg","http://img2.niutuku.com/desk/1207/1016/ntk123817.jpg"]
+      img_data: [".Image/banner2.png",".Image/banner3.png"]
     }
   },
   components: {

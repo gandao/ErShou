@@ -6,18 +6,18 @@
         <div class="img_wrapper"><img src="./1.jpg"/></div>
         <div class="name">图样图森破</div>
         <ul class="menu">
-          <li class="selected"><a href="#"><i class="el-icon-goods"></i>我的商品</a></li>
+          <li class="selected" @click.stop.prevent="fun_my_goods"><a href="#"><i class="el-icon-goods"></i>我的商品</a></li>
           <li><a href="#"><i class="el-icon-edit-outline"></i>发布商品</a></li>
           <li><a href="#"><i class="el-icon-date"></i>个人信息</a></li>
           <li><a href="#"><i class="el-icon-goods"></i>我的留言</a></li>
-          <li><a href="#"><i class="el-icon-star-on"></i>我的收藏</a></li>
+          <li @click.stop.prevent="fun_my_collection"><a href="#"><i class="el-icon-star-on"></i>我的收藏</a></li>
           <li><a href="#"><i class="el-icon-document"></i>意见反馈</a></li>
           <li><a href="#"><i class="el-icon-back"></i>退出</a></li>
         </ul>
       </div>
       <div class="right">
         <div class="nav">
-          当前位置: <span><a href="#">首页</a></span> &gt <span><a href="#">个人中心</a></span> &gt <span><a href="#">个人信息</a></span>
+          当前位置: <span><a href="#">首页</a></span>  <span><a href="#">个人中心</a></span> <span><a href="#">我的商品</a></span>
         </div>
         <div class="content_1"><router-view></router-view></div>
         
@@ -31,7 +31,16 @@
 </template>
 <script>
 export default {
-   
+   methods: {
+     fun_my_goods() {
+            this.$router.push({name: 'user_goods'})
+            this.is_menu_show = false
+      },
+      fun_my_collection() {
+          this.$router.push({name: 'user_collection'})
+          this.is_menu_show = false
+      }
+   }
 }
 </script>
 <style lang="less"  type="text/less">
@@ -131,7 +140,7 @@ export default {
         }
       }
       .content_1{
-        margin-top: 40px;
+        margin-top: 55px;
       }
     }
   }

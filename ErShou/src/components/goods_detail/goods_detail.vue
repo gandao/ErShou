@@ -45,8 +45,8 @@
                       描述: <span>基于灯泡造型设计的檀木摆放物件，基于名家之手，仅此一件，可面交和小刀。</span>
                   </div>
                   <div class="btn">
-                      <span><a href="#"><i class="el-icon-phone-outlin"></i>联系方式</a></span>
-                      <span><a href="#"><i class="el-icon-star-of"></i>想要</a></span>
+                      <span><a href="#">联系方式</a></span>
+                      <span><a href="#"><i class="el-icon-star-off"></i>想要</a></span>
                   </div>
               </div>
           </div>
@@ -217,6 +217,7 @@ export default {
                             color: #fff;
                             i{
                                 font-size: @p3;
+                                margin-right: 3px;
                             }    
                         }
                         &:hover{

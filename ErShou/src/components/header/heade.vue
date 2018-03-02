@@ -2,24 +2,24 @@
   <div id="header">
       <div class="wrapper">
           <div class="logo_wrapper"><img src="./logo.png"/>ERSHOU</div>
-          <div class="title"><span>首页</span></div>
+          <div class="title"><span @click.stop.prevent="fun_home_page"><a href="#">首页</a></span></div>
           <div class="search_wrapper">
-              <span class="title">SEARCH</span><input type="text"/><a href="#"><span @click.stop.prevent="search"><i class="el-icon-search
+              <span class="title">SEARCH</span><input type="text"/><a href="#"><span @click.stop.prevent="fun_search"><i class="el-icon-search
 "></i></span></a>
           </div>
           <div class="user_wrapper">
-              <div v-if="true" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img src="./user_head.jpg"/></span><span class="name">科里斯塔</span></div>
-              <div v-else class="login_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><a href="#">登录/注册</a></div>
+              <div v-if="is_log_in" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img src="./user_head.jpg"/></span><span class="name">科里斯塔</span></div>
+              <div v-else class="login_wrapper" @click.stop.prevent="fun_log_in"><a href="#">登录/注册</a></div>
               <el-collapse-transition>
-                <div v-show="is_menu_show" class="menu_wrapper">
+                <div v-if="is_log_in" v-show="is_menu_show" class="menu_wrapper">
                     <ul>
-                        <li class="selected"><a @click.stop.prevent="is_menu_show=false" href="#">我的商品</a></li>
+                        <li class="selected"><a @click.stop.prevent="fun_my_goods" href="#">我的商品</a></li>
                         <li><a href="#">发布商品</a></li>
                         <li><a href="#">个人信息</a></li>
                         <li><a href="#">我的留言</a></li>
-                        <li><a href="#">我的收藏</a></li>
+                        <li  @click.stop.prevent="fun_my_collection"><a href="#">我的收藏</a></li>
                         <li><a href="#">意见反馈</a></li>
-                        <li><a href="#">退出</a></li>
+                        <li @click.stop.prevent="fun_log_out"><a href="#">退出</a></li>
                     </ul>
                 </div>
               </el-collapse-transition>
@@ -31,7 +31,32 @@
 export default {
     data() {
         return {
-            is_menu_show: true
+            is_menu_show: false,
+            is_log_in: true
+        }
+    },
+    methods: {
+        fun_search() {
+            this.$router.push({name: 'goods_list'})
+        },
+        fun_home_page() {
+            this.$router.push({name: 'home_page'})
+        },
+        fun_log_out() {
+            this.$router.push({name: 'home_page'})
+            this.is_menu_show = false
+            this.is_log_in = false
+        },
+        fun_log_in() {
+            this.$router.push({name: 'log_in'})
+        },
+        fun_my_goods() {
+            this.$router.push({name: 'user_goods'})
+            this.is_menu_show = false
+        },
+        fun_my_collection() {
+            this.$router.push({name: 'user_collection'})
+            this.is_menu_show = false
         }
     }
 }
@@ -70,6 +95,15 @@ export default {
                 left: 20%;
                 line-height: 50px;
                 border-bottom: 2px solid @main_color;
+                a{
+                    color: @main_color;  
+                }
+                &:hover{
+                    border-bottom: 2px solid @font_hover_color;
+                    a{
+                        color: @font_hover_color;
+                    }
+                }
             }
         }
         .search_wrapper{
@@ -106,8 +140,8 @@ export default {
                     text-align: center;
                     padding: 4px 9px;
                     border-radius: 1px;
-                    &:active{
-                        background: #EF9191;
+                    &:hover{
+                        background: @font_hover_color;
                     }
                     i{
                         color: #fff;

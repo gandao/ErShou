@@ -41,7 +41,7 @@ export default {
   }
   .pager{
         position: absolute;
-        right: 10px;
+        right: -40px;
         bottom: 35px;
         .el-pagination{
             .btn-prev:hover,.btn-next:hover{

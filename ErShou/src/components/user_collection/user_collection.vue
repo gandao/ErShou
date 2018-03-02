@@ -2,8 +2,7 @@
   <div id="user_collection">
     <ul class="content_2">
       <li v-for="(item,index) in 8" :key="index"><user-goods-item></user-goods-item></li>
-      </ul>
-    
+    </ul>
     <div class="pager">
           <el-pagination
                 layout="prev, pager, next"
@@ -17,10 +16,10 @@
   </div>
 </template>
 <script>
-import user_goods_item from '../user_goods_item/user_goods_item'
+import user_collection_item from '../user_collection_item/user_collection_item'
 export default {
    components: {
-     userGoodsItem: user_goods_item
+     userGoodsItem: user_collection_item
    }
 }
 </script>
@@ -41,7 +40,7 @@ export default {
   }
   .pager{
         position: absolute;
-        right: 10px;
+        right: -40px;
         bottom: 35px;
         .el-pagination{
             .btn-prev:hover,.btn-next:hover{

@@ -1,7 +1,7 @@
 <template>
   <div id="goods_item">
       <div class="wrapper1">
-          <a href="#">
+          <a @click.stop.prevent="fun_goods_item" href="#">
             <div class="img_wrapper">
                 <img src='./15ed745e0902534f1626e10642fd14d3.jpg'/>
             </div>
@@ -18,6 +18,11 @@
 </template>
 <script>
 export default {
+    methods: {
+        fun_goods_item() {
+            this.$router.push({name: "goods_detail", query: { plan: Math.random() }})
+        }
+    }
 }
 </script>
 <style lang="less"  type="text/less">

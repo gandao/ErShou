@@ -4,7 +4,7 @@
           <div class="content_wrapper">
             <div class="left">
                 <div class="wrapper">
-                    <img />
+                    <img src="./img1.jpg">
                     <div class="one"></div>
                     <div class="two">
                     </div>
@@ -16,7 +16,7 @@
             </div>
             <div class="right">
                 <div class=" first">
-                    <img />
+                    <img src="./img3.jpg">
                     <div class="one"></div>
                     <div class="two"></div>
                     <div class="content">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class=" second">
-                    <img />
+                    <img src="./img2.jpg">
                     <div class="one"></div>
                     <div class="two"></div>
                     <div class="content">
@@ -59,11 +59,12 @@
             </div>
         </div>
       </div>
+      <div class="big_img"><img src="./banner2.png"></div>
       <div class="section_three">
           <div class="wrapper">
             <div class="title">
                 <a href="#">最想要的</a> / <a href="#">新品上市</a> / <a href="#">畅销品</a>
-                <span class="btn">
+                <span class="btn" @click.stop.prevent="fun_more">
                     <a class="more" href="#">更多<i class="el-icon-d-arrow-right"></i></a>
                 </span>
             </div>
@@ -86,6 +87,11 @@ export default {
     },
     components: {
         goodItem: goods_item
+    },
+    methods: {
+        fun_more() {
+            this.$router.push({name: "goods_list"})
+        }
     }
 }
 </script>
@@ -323,6 +329,13 @@ export default {
                     }
                 }
             }
+        }
+    }
+    .big_img{
+        width: 100%;
+        img{
+            width: 100%;
+            height: 300px;
         }
     }
 }
