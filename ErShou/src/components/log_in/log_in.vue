@@ -27,8 +27,10 @@
         </div>
       </div>
     </div>
+    <tip></tip>
   </div>
 </template>
+import tip from '../../components/tip/tip.vue'
 <script>
 export default {
    methods: {
@@ -156,7 +158,8 @@ export default {
       .logo{
         position: absolute;
         top: -46px;
-        right: 38%;
+        left: 50%;
+        transform: translateX(-50%);
         color: @main_color;
         background: #fff;
         font-size: @h3;

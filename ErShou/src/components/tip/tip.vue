@@ -1,14 +1,14 @@
 <template>
-  <div id="goods_list">
+  <div id="tip">
+    <div></div>
   </div>
 </template>
 <script>
 export default {
-   
 }
 </script>
 <style lang="less"  type="text/less">
 @import "../../common/less/index";
-#goods_list{
+#tip{
 }
 </style>

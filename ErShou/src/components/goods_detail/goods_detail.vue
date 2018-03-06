@@ -305,6 +305,7 @@ export default {
                 ul{
                     display: flex;
                     flex-direction: row;
+                    margin-left: 17px;
                     li{
                         flex: 1;
                         text-align: center;

@@ -2,7 +2,7 @@
   <div id="user_collection_item">
     <div class="wrapper">
       <div class="img_wrapper">
-        <a href="#"><img src="./a608f8dc739b3343c33660e4f502d281.jpeg" /></a>
+        <a href="#" @click.stop.prevent="fun_goto_detail"><img src="./a608f8dc739b3343c33660e4f502d281.jpeg" /></a>
         <div v-if="false" class="cover">
           <span>已下架</span>
         </div>
@@ -22,7 +22,11 @@
 </template>
 <script>
 export default {
-   
+   methods: {
+     fun_goto_detail() {
+       this.$router.push({name: 'goods_detail'})
+     }
+   }
 }
 </script>
 <style lang="less"  type="text/less">

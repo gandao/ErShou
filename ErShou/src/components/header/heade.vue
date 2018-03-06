@@ -14,11 +14,11 @@
                 <div v-if="is_log_in" v-show="is_menu_show" class="menu_wrapper">
                     <ul>
                         <li class="selected"><a @click.stop.prevent="fun_my_goods" href="#">我的商品</a></li>
-                        <li><a href="#">发布商品</a></li>
+                        <li><a href="#" @click.stop.prevent="fun_add_goods">发布商品</a></li>
                         <li><a href="#">个人信息</a></li>
                         <li><a href="#">我的留言</a></li>
                         <li  @click.stop.prevent="fun_my_collection"><a href="#">我的收藏</a></li>
-                        <li><a href="#">意见反馈</a></li>
+                        <li @click.stop.prevent="fun_user_feedback"><a href="#">意见反馈</a></li>
                         <li @click.stop.prevent="fun_log_out"><a href="#">退出</a></li>
                     </ul>
                 </div>
@@ -56,6 +56,14 @@ export default {
         },
         fun_my_collection() {
             this.$router.push({name: 'user_collection'})
+            this.is_menu_show = false
+        },
+        fun_add_goods() {
+            this.$router.push({name: 'user_add_goods'})
+            this.is_menu_show = false
+        },
+        fun_user_feedback() {
+            this.$router.push({name: 'user_feedback'})
             this.is_menu_show = false
         }
     }

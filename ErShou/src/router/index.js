@@ -8,6 +8,8 @@ import goods_detail from "../components/goods_detail/goods_detail"
 import user_center from "../components/user_center/user_center"
 import user_goods from "../components/user_goods/user_goods"
 import user_collection from "../components/user_collection/user_collection"
+import user_add_goods from "../components/user_add_goods/user_add_goods"
+import user_feedback from "../components/user_feedback/user_feedback"
 Vue.use(Router)
 
 export default new Router({
@@ -45,6 +47,16 @@ export default new Router({
             path: 'user_collection',
             component: user_collection,
             name: "user_collection"
+          },
+          {
+            path: 'user_add_goods',
+            component: user_add_goods,
+            name: "user_add_goods"
+          },
+          {
+            path: 'user_feedback',
+            component: user_feedback,
+            name: "user_feedback"
           }
         ]
       }

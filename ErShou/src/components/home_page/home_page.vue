@@ -47,12 +47,12 @@
             </div>
             <div class="content">
                 <transition name = 'section_two'>
-                    <ul v-show="!is_section_two_show">
+                    <ul v-show="!is_section_two_show" class='main_content'>
                         <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
                     </ul>
                 </transition>
                 <transition name = 'section_two'>
-                    <ul v-show="is_section_two_show" class="second">
+                    <ul v-show="is_section_two_show" class="second main_content">
                         <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
                     </ul>
                 </transition>
@@ -69,7 +69,7 @@
                 </span>
             </div>
             <div class="content">
-                <ul>
+                <ul class="main_content">
                     <li v-for='(item,index) in 8' :key="index"><good-item></good-item></li>
                 </ul>
             </div>
@@ -317,7 +317,7 @@ export default {
             }
             .content{
                 position: relative;
-                margin-top: 40px;
+                margin-top: 30px;
                 margin-bottom: 20px;
                 ul{
                     display: flex;
@@ -337,6 +337,9 @@ export default {
             width: 100%;
             height: 300px;
         }
+    }
+    .main_content{
+        margin-left: 17px;
     }
 }
 </style>
