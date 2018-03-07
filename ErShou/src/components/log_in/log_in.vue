@@ -27,17 +27,39 @@
         </div>
       </div>
     </div>
-    <tip></tip>
+    <transition name="toggle">
+        <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
+        </transition>
+        <transition name="toggle">
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+    </transition>
   </div>
 </template>
-import tip from '../../components/tip/tip.vue'
 <script>
+import tip from "../tip/tip.vue"
+import prompt from "../prompt/prompt.vue"
 export default {
-   methods: {
-     fun_log_in() {
+  data() {
+      return {
+          is_tip_show: false,
+          is_prompt_show: true
+      }
+    }, 
+    components: {
+        tip: tip,
+        prompt: prompt
+    },
+    methods: {
+      fun_submit() {
+          this.is_tip_show = true
+      },
+      fun_prompt() {
+        this.is_prompt_show = false
+      },
+      fun_log_in() {
        this.$router.push({name: 'home_page'})
-     }
-   }
+      }
+    }
 }
 </script>
 <style lang="less"  type="text/less">
@@ -178,6 +200,9 @@ export default {
         }
       }
     }
+  }
+  .tip_wrapper,.prompt_wrapper{
+        .tip_prompt_wrapper_style();
   }
 }
 </style>

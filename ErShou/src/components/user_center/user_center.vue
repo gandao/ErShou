@@ -27,13 +27,28 @@
         </div>
       </div>
     </div>
+    <transition name="toggle">
+      <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
+    </transition>
+    <transition name="toggle">
+      <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+    </transition>
   </div>
 </template>
 <script>
+import tip from "../tip/tip.vue"
+import prompt from "../prompt/prompt.vue"
 export default {
+  data() {
+    return {
+      is_tip_show: false,
+      is_prompt_show: true
+    }
+  },
    methods: {
      fun_my_goods() {
         this.$router.push({name: 'user_goods'})
+        this.is_tip_show = true
       },
       fun_my_collection() {
         this.$router.push({name: 'user_collection'})
@@ -43,7 +58,17 @@ export default {
       },
       fun_user_feedback() {
         this.$router.push({name: 'user_feedback'})
+      },
+      fun_tip() {
+        this.is_tip_show = !this.is_tip_show
+      },
+      fun_prompt() {
+        this.is_prompt_show = false
       }
+   },
+   components: {
+     tip: tip,
+     prompt: prompt
    }
 }
 </script>
@@ -148,6 +173,9 @@ export default {
         margin-top: 55px;
       }
     }
+  }
+  .tip_wrapper,.prompt_wrapper{
+    .tip_prompt_wrapper_style();
   }
 }
 </style>

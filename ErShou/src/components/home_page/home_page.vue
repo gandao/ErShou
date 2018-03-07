@@ -75,22 +75,40 @@
             </div>
         </div>
       </div>
+      <transition name="toggle">
+        <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
+        </transition>
+        <transition name="toggle">
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+      </transition>
   </div>
 </template>
 <script>
 import goods_item from "../goods_item/goods_item"
+import tip from "../tip/tip.vue"
+import prompt from "../prompt/prompt.vue"
 export default {
     data() {
         return {
-            is_section_two_show: false
+            is_section_two_show: false,
+            is_tip_show: true,
+            is_prompt_show: true
         }
     },
     components: {
-        goodItem: goods_item
+        goodItem: goods_item,
+        tip: tip,
+        prompt: prompt
     },
     methods: {
         fun_more() {
             this.$router.push({name: "goods_list"})
+        },
+        fun_tip() {
+        this.is_tip_show = false
+        },
+        fun_prompt() {
+            this.is_prompt_show = false
         }
     }
 }
@@ -340,6 +358,9 @@ export default {
     }
     .main_content{
         margin-left: 17px;
+    }
+    .tip_wrapper,.prompt_wrapper{
+        .tip_prompt_wrapper_style();
     }
 }
 </style>

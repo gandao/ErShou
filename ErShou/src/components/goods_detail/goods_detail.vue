@@ -57,7 +57,7 @@
       </div>
       <div class="message">
           <textarea></textarea>
-          <span><a href="#">提交</a></span>
+          <span @click.stop.prevent="fun_submit"><a href="#">提交</a></span>
       </div>
       <div class="section_two">
         <div class="wrapper">
@@ -82,18 +82,41 @@
             </div>
         </div>
       </div>
+      <transition name="toggle">
+        <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
+        </transition>
+        <transition name="toggle">
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+      </transition>
   </div>
 </template>
 <script>
 import goods_item from "../goods_item/goods_item"
+import tip from "../tip/tip.vue"
+import prompt from "../prompt/prompt.vue"
 export default { 
     data() {
         return {
-            is_section_two_show: false
+            is_section_two_show: false,
+            is_tip_show: false,
+            is_prompt_show: false
         }
     }, 
     components: {
-        goodItem: goods_item
+        goodItem: goods_item,
+        tip: tip,
+        prompt: prompt
+    },
+    methods: {
+      fun_submit() {
+          this.is_tip_show = true
+      },
+      fun_tip() {
+        this.is_tip_show = false
+      },
+      fun_prompt() {
+        this.is_prompt_show = false
+      }
     }
 }
 </script>
@@ -331,6 +354,9 @@ export default {
                 }
             }
         }
+    }
+    .tip_wrapper,.prompt_wrapper{
+        .tip_prompt_wrapper_style();
     }
 }
 </style>
