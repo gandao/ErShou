@@ -10,6 +10,8 @@ import user_goods from "../components/user_goods/user_goods"
 import user_collection from "../components/user_collection/user_collection"
 import user_add_goods from "../components/user_add_goods/user_add_goods"
 import user_feedback from "../components/user_feedback/user_feedback"
+import user_information from "../components/user_information/user_information"
+import user_message from "../components/user_news/user_news"
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +59,16 @@ export default new Router({
             path: 'user_feedback',
             component: user_feedback,
             name: "user_feedback"
+          },
+          {
+            path: 'user_information',
+            component: user_information,
+            name: "user_information"
+          },
+          {
+            path: 'user_message',
+            component: user_message,
+            name: "user_message"
           }
         ]
       }

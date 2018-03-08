@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             is_tip_show: false,
-            is_prompt_show: true
+            is_prompt_show: false
         }
     },
     components: {

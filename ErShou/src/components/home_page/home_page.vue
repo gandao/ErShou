@@ -91,8 +91,8 @@ export default {
     data() {
         return {
             is_section_two_show: false,
-            is_tip_show: true,
-            is_prompt_show: true
+            is_tip_show: false,
+            is_prompt_show: false
         }
     },
     components: {

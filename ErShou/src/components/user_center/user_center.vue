@@ -6,12 +6,12 @@
         <div class="img_wrapper"><img src="./1.jpg"/></div>
         <div class="name">图样图森破</div>
         <ul class="menu">
-          <li class="selected" @click.stop.prevent="fun_my_goods"><a href="#"><i class="el-icon-goods"></i>我的商品</a></li>
-          <li @click.stop.prevent="fun_add_goods"><a href="#"><i class="el-icon-edit-outline"></i>发布商品</a></li>
-          <li><a href="#"><i class="el-icon-date"></i>个人信息</a></li>
-          <li><a href="#"><i class="el-icon-goods"></i>我的留言</a></li>
-          <li @click.stop.prevent="fun_my_collection"><a href="#"><i class="el-icon-star-on"></i>我的收藏</a></li>
-          <li @click.stop.prevent="fun_user_feedback"><a href="#"><i class="el-icon-document"></i>意见反馈</a></li>
+          <li :class="{'select':menu_selected[0]}" @click.stop.prevent="fun_menu_item(0)"><a href="#"><i class="el-icon-goods"></i>我的商品</a></li>
+          <li :class="{'select':menu_selected[1]}" @click.stop.prevent="fun_menu_item(1)"><a href="#"><i class="el-icon-edit-outline"></i>发布商品</a></li>
+          <li :class="{'select':menu_selected[2]}" @click.stop.prevent="fun_menu_item(2)"><a href="#"><i class="el-icon-date"></i>个人信息</a></li>
+          <li :class="{'select':menu_selected[3]}" @click.stop.prevent="fun_menu_item(3)"><a href="#"><i class="el-icon-goods"></i>我的留言</a></li>
+          <li :class="{'select':menu_selected[4]}" @click.stop.prevent="fun_menu_item(4)"><a href="#"><i class="el-icon-star-on"></i>我的收藏</a></li>
+          <li :class="{'select':menu_selected[5]}" @click.stop.prevent="fun_menu_item(5)"><a href="#"><i class="el-icon-document"></i>意见反馈</a></li>
           <li><a href="#"><i class="el-icon-back"></i>退出</a></li>
         </ul>
       </div>
@@ -42,22 +42,14 @@ export default {
   data() {
     return {
       is_tip_show: false,
-      is_prompt_show: true
+      is_prompt_show: false,
+      menu_selected: [false,false,false,false,false,false],
+      menu_item: ["user_goods","user_add_goods","user_information","user_message","user_collection","user_feedback"]
     }
   },
    methods: {
-     fun_my_goods() {
-        this.$router.push({name: 'user_goods'})
-        this.is_tip_show = true
-      },
-      fun_my_collection() {
-        this.$router.push({name: 'user_collection'})
-      },
-      fun_add_goods() {
-        this.$router.push({name: 'user_add_goods'})
-      },
-      fun_user_feedback() {
-        this.$router.push({name: 'user_feedback'})
+      fun_menu_item(index) {
+        this.$router.push({name: this.menu_item[index]})
       },
       fun_tip() {
         this.is_tip_show = !this.is_tip_show
@@ -65,6 +57,20 @@ export default {
       fun_prompt() {
         this.is_prompt_show = false
       }
+   },
+   watch: {
+     '$route'() {
+       var path = this.$route.path
+       for (var i = 0; i < this.menu_item.length; i++) {
+         if (path.indexOf(this.menu_item[i]) !== -1) {
+           for (var j = 0; j < this.menu_selected.length; j++) {
+             this.menu_selected[j] = false
+           }
+           this.menu_selected[i] = true
+           break
+         }
+       }
+     }
    },
    components: {
      tip: tip,
@@ -127,7 +133,7 @@ export default {
             }
             
           }
-          &:hover{
+          &:hover,&.select{
             background: @font_hover_color;
           }
         }
