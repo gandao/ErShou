@@ -92,7 +92,11 @@ export default {
         return {
             is_section_two_show: false,
             is_tip_show: false,
-            is_prompt_show: false
+            is_prompt_show: false,
+            user: {
+                account: "123",
+                password: "123"
+            }
         }
     },
     components: {
@@ -110,7 +114,10 @@ export default {
         fun_prompt() {
             this.is_prompt_show = false
         }
-    }
+    },
+    created() {
+     }
+
 }
 </script>
 <style lang="less"  type="text/less">
