@@ -8,45 +8,45 @@
       <div class="detail">
           <div class="wrapper">
               <div class="left">
-                  <div class="big"><img src="./a608f8dc739b3343c33660e4f502d281.jpeg"/></div>
+                  <div class="big"><img :src="goods.imageUrls[img_index]"/></div>
                   <div class='small'>
                       <ul>
-                          <li v-for="(item,index) in 4" :key="index"><img src="./a608f8dc739b3343c33660e4f502d281.jpeg"/></li>
+                          <li @mouseover="img_index = index" v-for="(item,index) in goods.imageUrls" :key="index"><img :src="item"/></li>
                       </ul>
                   </div>
                   <div class="date_desc">
-                      <span>发布于: 2017-12-32 00:00:00</span>
-                      <span>11次浏览</span>
+                      <span>发布于: {{goods.uploadTime}}</span>
+                      <span>{{goods.collecterCount}} 次收藏</span>
                   </div>
               </div>
               <div class="right">
-                  <div class="title1">檀木灯泡</div>
+                  <div class="title1">{{goods.name}}</div>
                   <div class="some_message">
                       <span>价格</span>
-                      <span>$ 55</span>
+                      <span>$ {{goods.price}}</span>
                   </div>
                   <div class="some_message">
                       <span>原价</span>
-                      <span>$ 115</span>
+                      <span>$ {{goods.originalPrice}}</span>
                   </div>
                   <div class="some_message">
                       <span>买家</span>
-                      <span>图样图森破</span>
+                      <span>{{goods.ownerName}}</span>
                   </div>
                   <div class="some_message">
                       <span>交易地点</span>
-                      <span>东区小树林</span>
+                      <span>{{goods.address}}</span>
                   </div>
                   <div class="some_message">
                       <span>交易方式</span>
                       <span>在线交易/线下交易</span>
                   </div>
                   <div class="detail_desc">
-                      描述: <span>基于灯泡造型设计的檀木摆放物件，基于名家之手，仅此一件，可面交和小刀。</span>
+                      描述: <span>{{goods.introduction}}</span>
                   </div>
                   <div class="btn">
-                      <span><a href="#">联系方式</a></span>
-                      <span><a href="#"><i class="el-icon-star-off"></i>想要</a></span>
+                      <span @click.stop.prevent="is_contact_show = true"><a href="#">联系方式</a></span>
+                      <span @click.stop.prevent="fun_collection"><a href="#"><i class="el-icon-star-off"></i>想要</a></span>
                   </div>
               </div>
           </div>
@@ -56,7 +56,7 @@
           <div class="small">MESSAGE</div>
       </div>
       <div class="message">
-          <textarea></textarea>
+          <textarea v-model="user_message"></textarea>
           <span @click.stop.prevent="fun_submit"><a href="#">提交</a></span>
       </div>
       <div class="section_two">
@@ -64,60 +64,138 @@
             <div class="title">
                 其他推荐
                 <span class="btn">
-                    <a @click.stop.prevent="is_section_two_show = !is_section_two_show" class="selected" href="#"><i class="el-icon-arrow-left"></i></a>
-                    <a href="#"><i class="el-icon-arrow-right"></i></a>
+                    <a @click.stop.prevent="is_section_two_show = false ; section_two_selected = 0;" :class="{'selected': section_two_selected === 0}" href="#"><i class="el-icon-arrow-left"></i></a>
+                    <a href="#" @click.stop.prevent="is_section_two_show = true; section_two_selected = 1;" :class="{'selected': section_two_selected === 1}"><i class="el-icon-arrow-right"></i></a>
                 </span>
             </div>
             <div class="content">
                 <transition name = 'section_two'>
                     <ul v-show="!is_section_two_show">
-                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                        <li v-for='(item,index) in other_recommend' :key="index"><good-item :data="item"></good-item></li>
                     </ul>
                 </transition>
                 <transition name = 'section_two'>
                     <ul v-show="is_section_two_show" class="second">
-                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                        <li v-for='(item,index) in other_recommend' :key="index"><good-item :data="item"></good-item></li>
                     </ul>
                 </transition>
             </div>
         </div>
       </div>
-      <transition name="toggle">
-        <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
-        </transition>
         <transition name="toggle">
-        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt :message="prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
       </transition>
+      <transition name="fade">
+        <div class="contact_wrapper" v-if="is_contact_show">
+            <div class="title2">联系方式<span @click.stop.prevent="is_contact_show= false" class="colse"><a  href="#"><i class="el-icon-close"></i></a></span></div>
+            <div class="detail">
+            <div><span class="first">手机号:</span><span class="second">{{goods.contacts[2].contact}}</span></div>
+            <div><span class="first">QQ号:</span><span class="second">{{goods.contacts[1].contact}}</span></div>
+            <div><span class="first">微信号:</span><span class="second">{{goods.contacts[0].contact}}</span></div>
+            </div>
+        </div> 
+    </transition>
   </div>
 </template>
 <script>
 import goods_item from "../goods_item/goods_item"
-import tip from "../tip/tip.vue"
 import prompt from "../prompt/prompt.vue"
-export default { 
+export default {
+    props: ["user_status"], 
     data() {
         return {
             is_section_two_show: false,
-            is_tip_show: false,
-            is_prompt_show: false
+            section_two_selected: 0,
+            is_prompt_show: false,
+            is_contact_show: false,
+            prompt_message: "",
+            user_message: "",
+            goods: {},
+            other_recommend: [],
+            img_index: 0
         }
     }, 
     components: {
         goodItem: goods_item,
-        tip: tip,
         prompt: prompt
     },
     methods: {
       fun_submit() {
-          this.is_tip_show = true
+        if (this.user_status.is_login) {
+        if (this.user_message !== '') {
+            let option = {}
+            let data = {}
+            let that = this
+            data.id = this.goods.ownerId
+            data.content = this.user_message
+            option.data = data
+            option.method = "put"
+            option.url = '/unusedgoods/add_userdlg'
+            that.$http(option).then(function (successData) {
+              if (successData.data.id === 1) {
+                that.prompt_message = '提交成功'
+              }
+              else {
+                that.prompt_message = '后台可能出现了错误'
+              }
+              that.is_prompt_show = true
+            },(fileData) => { console.log(fileData)})
+        }
+        else {
+          this.prompt_message = '请先输入留言信息'
+          this.is_prompt_show = true
+        }
+        }
+        else {
+            this.prompt_message = '请您先登录'
+            this.is_prompt_show = true
+        }
       },
-      fun_tip() {
-        this.is_tip_show = false
+      fun_collection() {
+        if (this.user_status.is_login) {
+            if (this.goods.isCollecte) {
+                this.prompt_message = '已经收藏'
+                this.is_prompt_show = true
+                return 
+            }
+            let option = {}
+            let that = this
+            option.method = 'get'
+            option.url = '/unusedgoods/add_save?id=' + that.$route.query.id
+            that.$http(option).then(function (successData) {
+                if (successData.data.id === 1) {
+                    that.goods.isCollecte = true
+                    that.prompt_message = '收藏成功'
+                }
+                else {
+                    that.prompt_message = '后台可能出现了错误'
+                }
+                that.is_prompt_show = true
+        },(fileData) => { console.log(fileData)})
+      }
+      else {
+        this.prompt_message = '请您先登录'
+        this.is_prompt_show = true
+      }
       },
       fun_prompt() {
         this.is_prompt_show = false
       }
-    }
+    },
+    created() {
+        let that = this
+        that.$http.get("http://localhost:8080/unusedgoods/goods_detail?id=" + that.$route.query.id).then(function (successData) {
+            that.$nextTick(() => {
+                that.goods = successData.data
+                console.log(that.goods)
+            })
+        },(fileData) => { console.log(fileData)})
+        that.$http.get("http://localhost:8080/unusedgoods/goods_recommend?id=" + that.$route.query.id).then(function (successData) {
+            that.$nextTick(() => {
+                that.other_recommend = successData.data
+            })
+        },(fileData) => { console.log(fileData)})
+        }
 }
 </script>
 <style lang="less"  type="text/less">
@@ -358,5 +436,80 @@ export default {
     .tip_wrapper,.prompt_wrapper{
         .tip_prompt_wrapper_style();
     }
+    .contact_wrapper{
+        position: fixed;
+        z-index: 999;
+        width: 260px;
+        border-radius: 2px;
+        top: 39%;
+        left:43%;
+        border: 2px solid @main_color;
+        background: #FFF;
+        box-shadow: 1px 1px 50px rgba(0,0,0,.1);
+        &.fade-enter-active,&.fade-leave-active{
+        transition: all 0.28s ease-in-out;
+        }
+        &.fade-enter-to,&.fade-leave{
+        transform: scale(1,1)
+        }
+            &.fade-enter,&.fade-leave-to{
+        transform: scale(0,0)
+        }
+        .title2{
+        padding: 10px 0;
+        text-align: center;
+        background: @main_color;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        .colse{
+            position: absolute;
+            background: #fff;
+            top: -12px;
+            right: -12px;
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            border: 2px solid @main_color;
+            border-radius: 14px;
+            &:hover{
+            border: 2px solid #EE8484;
+            i{
+                color: #EE8484;
+            }
+            }
+            i{
+            color: @main_color;
+            text-align: center;
+            line-height: 28px;
+            font-size: 15px;
+            font-weight: bold;
+            }
+        }
+        }
+        .detail{
+        position: relative;
+        padding: 30px 0;
+        width: 70%;
+        margin: 0 auto;
+        div{
+            margin-bottom: 18px;
+            &:last-child{
+            margin-bottom: 0px;
+            }
+            .first{
+            display: inline-block;
+            font-size: 14px;
+            color: #B6B5B5;
+            width: 60px;
+            }
+            .second{
+            font-size: 16px;
+            color: @main_color;
+            }
+            // text-align: center;
+        }
+        }
+  }
 }
 </style>

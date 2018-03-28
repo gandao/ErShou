@@ -3,13 +3,13 @@
       <div class="wrapper1">
           <a @click.stop.prevent="fun_goods_item" href="#">
             <div class="img_wrapper">
-                <img src='./15ed745e0902534f1626e10642fd14d3.jpg'/>
+                <img :src=data.imageUrl />
             </div>
             <div class="detail_wrapper">
-                <div class="name">紫立惠得鲜话</div>
+                <div class="name">{{data.name}}</div>
                 <div class="price">
-                    <span class="new">$ 35.00</span>
-                    <span class="old">$ 50.00</span>
+                    <span class="new">$ {{data.price}}</span>
+                    <span class="old">$ {{data.originalPrice}}</span>
                 </div>
             </div>
           </a>
@@ -18,9 +18,10 @@
 </template>
 <script>
 export default {
+    props: ["data"],
     methods: {
         fun_goods_item() {
-            this.$router.push({name: "goods_detail", query: { plan: Math.random() }})
+            this.$router.push({name: "goods_detail", query: { 'id': this.data.id }})
         }
     }
 }

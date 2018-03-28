@@ -11,16 +11,17 @@
       </div>
       <div class="content">
           <ul>
-              <li v-for="(item,index) in 16" :key="index"><good-item></good-item></li>
+              <li v-for="(item,index) in list_data" :key="index"><good-item :data="item"></good-item></li>
           </ul>
       </div>
-      <div class="pager">
+      <div v-if="is_pager_show" class="pager">
           <el-pagination
+                @current-change="pager_change"
                 layout="prev, pager, next"
                 prev-text="上一页"
                 next-text="下一页"
-                :current-page="0"
-                :page-count="4"
+                :current-page="now_page"
+                :page-count="all_page"
                 >
             </el-pagination>
       </div>
@@ -28,7 +29,7 @@
         <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
         </transition>
         <transition name="toggle">
-        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt :message="prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
       </transition>
   </div>
 </template>
@@ -36,11 +37,18 @@
 import goods_item from "../goods_item/goods_item"
 import tip from "../tip/tip.vue"
 import prompt from "../prompt/prompt.vue"
+import event_transfer from "../../common/js/event_transfer.js"
 export default {
+    props: ["search"],
     data() {
         return {
             is_tip_show: false,
-            is_prompt_show: false
+            is_prompt_show: false,
+            prompt_message: "",
+            is_pager_show: false,
+            list_data: [],
+            now_page: 0,
+            all_page: 0
         }
     },
     components: {
@@ -54,7 +62,48 @@ export default {
       },
       fun_prompt() {
         this.is_prompt_show = false
+      },
+      search1(val) {
+        let option = {}
+        let put_data = {}
+        let url = '/search'
+        let that = this
+        put_data.classification = ""
+
+        put_data.keyWords = this.search.message   
+        put_data.min = ''
+        put_data.max = ''
+        if (val) {
+            put_data.start = val
+        } else {
+            put_data.start = 1
+        }
+
+        option.url = url
+        option.data = put_data
+        option.method = "POST"
+        that.$http(option)
+        .then((response) => {
+             that.$nextTick(() => {
+                that.list_data = response.data.list
+                that.all_page = response.data.allPageCount
+                that.now_page = response.data.currentPageCount
+                if (that.all_page > 1) {
+                    that.is_pager_show = true
+                }
+			})
+        },
+        (fileData) => { 
+            that.prompt_message = '网络请求发送失败'
+            that.is_prompt_show = true
+        })
+      },
+      pager_change(val) {
+        this.search1(val)
       }
+    },
+    created() {
+         event_transfer.$on('search1',this.search)
     }
 }
 </script>

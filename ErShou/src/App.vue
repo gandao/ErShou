@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="content">
-      <router-view></router-view>
+      <router-view :user_status=user_status></router-view>
     </div>
     <vfooter></vfooter>
   </div>
@@ -12,6 +12,8 @@ export default {
   name: 'App',
   data() {
     return {
+      user: {
+      },
       user_status: {
         is_login: false
       }

@@ -19,7 +19,7 @@
         <div class="nav">
           当前位置: <span><a href="#">首页</a></span>  <span><a href="#">个人中心</a></span> <span><a href="#">我的商品</a></span>
         </div>
-        <div class="content_1"><router-view></router-view></div>
+        <div class="content_1"><router-view v-on:tip_show="tip_show" v-on:prompt_show="prompt_show" :data='data'></router-view></div>
         
         <div class="title">
           <div class="big">二手交易平台 PERSONAL CENTER</div>
@@ -31,7 +31,7 @@
       <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
     </transition>
     <transition name="toggle">
-      <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+      <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt :message="data.prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
     </transition>
   </div>
 </template>
@@ -43,6 +43,10 @@ export default {
     return {
       is_tip_show: false,
       is_prompt_show: false,
+      data: {
+        tip_message: "",
+        prompt_message: ""
+      },
       menu_selected: [false,false,false,false,false,false],
       menu_item: ["user_goods","user_add_goods","user_information","user_message","user_collection","user_feedback"]
     }
@@ -56,6 +60,12 @@ export default {
       },
       fun_prompt() {
         this.is_prompt_show = false
+      },
+      tip_show() {
+        this.is_tip_show = true
+      },
+      prompt_show() {
+        this.is_prompt_show = true
       }
    },
    watch: {
@@ -176,7 +186,7 @@ export default {
         }
       }
       .content_1{
-        margin-top: 55px;
+        margin-top: 30px;
       }
     }
   }

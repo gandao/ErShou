@@ -4,14 +4,14 @@
           <div class="logo_wrapper"><img src="./logo.png"/>ERSHOU</div>
           <div class="title"><span @click.stop.prevent="fun_menu_item(0)"><a href="#">首页</a></span></div>
           <div class="search_wrapper">
-              <span class="title">SEARCH</span><input type="text"/><a href="#"><span @click.stop.prevent="fun_search"><i class="el-icon-search
+              <span class="title">SEARCH</span><input v-model="search_content" type="text"/><a href="#"><span @click.stop.prevent="fun_search"><i class="el-icon-search
 "></i></span></a>
           </div>
           <div class="user_wrapper">
-              <div v-if="is_log_in" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img src="./user_head.jpg"/></span><span class="name">科里斯塔</span></div>
+              <div v-if="user_status.is_login" class="user_img_wrapper" @click.stop.prevent="is_menu_show=!is_menu_show"><span class="img_wrapper"><img :src="data.url"/></span><span class="name">{{data.value}}</span></div>
               <div v-else class="login_wrapper" @click.stop.prevent="fun_menu_item(1)"><a href="#">登录/注册</a></div>
               <el-collapse-transition>
-                <div v-if="is_log_in" v-show="is_menu_show" class="menu_wrapper">
+                <div v-if="user_status.is_login" v-show="is_menu_show" class="menu_wrapper">
                     <ul>
                         <li><a @click.stop.prevent="fun_menu_item(2)" href="#">我的商品</a></li>
                         <li @click.stop.prevent="fun_menu_item(3)"><a href="#">发布商品</a></li>
@@ -28,17 +28,27 @@
   </div>
 </template>
 <script>
+import event_transfer from "../../common/js/event_transfer.js"
 export default {
+    props: ["user_status","prompt_content","search"],
     data() {
         return {
             is_menu_show: false,
-            is_log_in: true,
+            search_content: "",
+            data: {},
             nav_item: ["home_page","log_in","user_goods","user_add_goods","user_information","user_message","user_collection","user_feedback"]
         }
     },
     methods: {
         fun_search() {
-            this.$router.push({name: 'goods_list'})
+            if (this.search_content === "") {
+                this.prompt_content.message = "请输入搜索内容！"
+                this.$emit('prompt_show')
+            } else {
+                this.search.message = this.search_content
+                this.$router.push({name: 'goods_list'})
+                event_transfer.$emit("search1")
+            }
         },
         fun_menu_item(index) {
             this.$router.push({name: this.nav_item[index]})
@@ -47,9 +57,32 @@ export default {
         fun_log_out() {
             this.$router.push({name: 'home_page'})
             this.is_menu_show = false
-            this.is_log_in = false
+            this.user_status.is_login = false
         }
-    }
+    },
+      created() {
+        let option = {}
+        let url = '/unusedgoods/user_islogin'
+        let that = this
+   
+        option.url = url
+        option.method = "GET"
+        // if (that.user_status.is_login === true) return
+        that.$http(option)
+        .then((response) => {
+             that.$nextTick(() => {
+                if (response.data.id !== -1) {
+                    that.data = response.data
+                    that.user_status.is_login = true
+                }
+                else {
+                    this.$router.push({name: 'home_page'})
+                }
+			})
+        },function() {
+            this.$router.push({name: 'home_page'})
+        })
+  }
 }
 </script>
 <style lang="less"  type="text/less">
@@ -68,6 +101,7 @@ export default {
             font-weight: 700;
             color: @main_color;
             img{
+                display: inline-block;
                 vertical-align: middle;
                 width: 39px;
                 height: 39px;
@@ -177,6 +211,7 @@ export default {
                     border-radius: 22px;
                     margin-top: 4px;
                     img{
+                        display: inline-block;
                         width: 40px;
                         height: 40px;
                         border-radius: 20px;

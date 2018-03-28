@@ -4,7 +4,7 @@
       <div class="title">提示</div>
       <div class="content3">
         <div class="content_wrapper3">
-            网络问题!
+            {{message}}
         </div>
         <span class="btn" @click.stop.prevent="fun_toggle"><a href="#">确定</a></span>
       </div>
@@ -13,6 +13,7 @@
 </template>
 <script>
 export default {
+  props: ["message"],
   methods: {
     fun_toggle() {
       this.$emit('toggle_prompt')

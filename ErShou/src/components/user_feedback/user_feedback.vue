@@ -5,15 +5,41 @@
         <div class="wrapper1">
           <textarea v-model="user_feedback"></textarea>
         </div>
-        <span class="btn" ><a href="#">提交</a></span>
+        <span @click.stop.prevent="confirm_fun" class="btn" ><a href="#">提交</a></span>
       </div>
   </div>
 </template>
 <script>
 export default {
+  props: ["data"],
   data() {
     return {
       user_feedback: ''
+    }
+  },
+  methods: {
+    confirm_fun() {
+      let that = this
+      let option = {}
+      option.method = "put"
+      option.url = '/user_feedback'
+      option.data = {}
+      option.data.content = this.user_feedback
+      if (this.user_feedback === '') {
+          this.data.prompt_message = '请先输入意见内容'
+          this.$emit('prompt_show')
+      }
+      else {
+          that.$http(option)
+          .then((response) => {
+              that.data.prompt_message = '提交成功'
+              that.$emit('prompt_show')
+          },
+          (fileData) => {
+              that.data.prompt_message = '网络请求发送失败'
+              that.$emit('prompt_show')
+          })
+      }
     }
   }
 }

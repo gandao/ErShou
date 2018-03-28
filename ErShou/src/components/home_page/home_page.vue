@@ -39,21 +39,21 @@
       <div class="section_two">
         <div class="wrapper">
             <div class="title">
-                <a class="selected" href="#">最想要的</a> / <a href="#">新品上市</a> / <a href="#">畅销品</a>
+                <a @click.stop.prevent="fun_section_content(0)" :class="{'selected': section_two_index === 0}" href="#">最想要的</a> / <a href="#" @click.stop.prevent="fun_section_content(1)" :class="{'selected': section_two_index === 1}">新品上市</a> / <a href="#" :class="{'selected': section_two_index === 2}" @click.stop.prevent="fun_section_content(2)">畅销品</a>
                 <span class="btn">
-                    <a @click.stop.prevent="is_section_two_show = !is_section_two_show" class="selected" href="#"><i class="el-icon-arrow-left"></i></a>
-                    <a href="#"><i class="el-icon-arrow-right"></i></a>
+                    <a @click.stop.prevent="is_section_two_show = false ; section_two_selected = 0;" :class="{'selected': section_two_selected === 0}" href="#"><i class="el-icon-arrow-left"></i></a>
+                    <a href="#" @click.stop.prevent="is_section_two_show = true; section_two_selected = 1;" :class="{'selected': section_two_selected === 1}"><i class="el-icon-arrow-right"></i></a>
                 </span>
             </div>
             <div class="content">
                 <transition name = 'section_two'>
                     <ul v-show="!is_section_two_show" class='main_content'>
-                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                        <li v-for='(item,index) in section_two_content' :key="index"><good-item :data="item"></good-item></li>
                     </ul>
                 </transition>
                 <transition name = 'section_two'>
                     <ul v-show="is_section_two_show" class="second main_content">
-                        <li v-for='(item,index) in 4' :key="index"><good-item></good-item></li>
+                        <li v-for='(item,index) in section_two_content_1' :key="index"><good-item :data="item"></good-item></li>
                     </ul>
                 </transition>
             </div>
@@ -63,60 +63,78 @@
       <div class="section_three">
           <div class="wrapper">
             <div class="title">
-                <a href="#">最想要的</a> / <a href="#">新品上市</a> / <a href="#">畅销品</a>
+                <a :class="{'selected': section_three_index === 0}" href="#" @click.stop.prevent="fun_section_content(3)">最想要的</a> / <a  :class="{'selected': section_three_index === 1}" href="#" @click.stop.prevent="fun_section_content(4)">新品上市</a> / <a :class="{'selected': section_three_index === 2}"  href="#" @click.stop.prevent="fun_section_content(5)">畅销品</a>
                 <span class="btn" @click.stop.prevent="fun_more">
                     <a class="more" href="#">更多<i class="el-icon-d-arrow-right"></i></a>
                 </span>
             </div>
             <div class="content">
                 <ul class="main_content">
-                    <li v-for='(item,index) in 8' :key="index"><good-item></good-item></li>
+                    <li v-for='(item,index) in section_three_content' :key="index"><good-item :data="item"></good-item></li>
                 </ul>
             </div>
         </div>
       </div>
-      <transition name="toggle">
-        <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
-        </transition>
-        <transition name="toggle">
-        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
-      </transition>
   </div>
 </template>
 <script>
 import goods_item from "../goods_item/goods_item"
-import tip from "../tip/tip.vue"
-import prompt from "../prompt/prompt.vue"
 export default {
+    props: ["prompt_content"],
     data() {
         return {
             is_section_two_show: false,
-            is_tip_show: false,
-            is_prompt_show: false,
+            section_two_selected: 0,
             user: {
                 account: "123",
                 password: "123"
-            }
+            },
+            all_data: [],
+            section_two_content: [],
+            section_two_content_1: [],
+            section_three_content: [],
+            section_two_index: 0,
+            section_three_index: 0
         }
     },
     components: {
-        goodItem: goods_item,
-        tip: tip,
-        prompt: prompt
+        goodItem: goods_item
     },
     methods: {
         fun_more() {
             this.$router.push({name: "goods_list"})
         },
-        fun_tip() {
-        this.is_tip_show = false
-        },
-        fun_prompt() {
-            this.is_prompt_show = false
+        fun_section_content(index) {
+            var i
+            if (index < 3) {
+                for (i = 0; i < 4; i++) {
+                    this.section_two_content[i] = this.all_data[index].views[i]
+                    this.section_two_content_1[i] = this.all_data[index].views[i + 4]
+                    this.section_two_index = index
+                }
+            } else {
+                for (i = 0; i < 8; i++) {
+                    this.section_three_content[i] = this.all_data[index].views[i]
+                    this.section_three_index = index - 3
+                }
+            }
         }
     },
     created() {
-     }
+        let that = this
+        this.$http.get("http://localhost:8080/unusedgoods/home_recommend").then(function (successData) {
+        that.$nextTick(() => {
+                that.all_data = successData.data
+                that.section_three_content = that.all_data[3].views
+                that.fun_section_content(0)
+                that.fun_section_content(3)
+            })
+        },
+        (fileData) => { 
+            that.prompt_content.message = '网络请求发送失败'
+            that.$emit("prompt_content_1")
+        })
+    }
 
 }
 </script>
@@ -365,9 +383,6 @@ export default {
     }
     .main_content{
         margin-left: 17px;
-    }
-    .tip_wrapper,.prompt_wrapper{
-        .tip_prompt_wrapper_style();
     }
 }
 </style>

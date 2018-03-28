@@ -14,11 +14,11 @@
     <div class="content">
       <div class="wrapper">
         <div class="title">ACCOUNT LOGIN</div>
-        <div class="input"><span>账号</span><input/></div>
-        <div class="input"><span>密码</span><input/></div>
+        <div class="input"><span>账号</span><input v-model="user.account" type="text"/></div>
+        <div class="input"><span>密码</span><input v-model="user.password" type="password" /></div>
         <div class="btn">
-          <span class="one" @click.stop.prevent="is_mailbox_check_show = true"><a href="#">我要注册</a></span>|
-          <span class="one second"><a href="#">忘记密码</a></span>
+          <span class="one" @click.stop.prevent="is_mailbox_check_show = true; option = 0"><a href="#">我要注册</a></span>|
+          <span class="one second" @click.stop.prevent="is_mailbox_check_show = true; option = 1;"><a href="#">忘记密码</a></span>
           <span class="two" @click.stop.prevent="fun_log_in"><a href="#">登录</a></span>
         </div>
         <div class="logo">
@@ -31,7 +31,7 @@
         <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
         </transition>
         <transition name="toggle">
-        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt v-on:toggle_prompt="fun_prompt"></prompt></div>    
+        <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt :message="prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
     </transition>
     <transition name="mailbox_check">
       <div v-if="is_mailbox_check_show" class="mailbox_check">
@@ -40,8 +40,8 @@
           <div class="mail_content">
             <div class="wrapper2">
               <span class="name">邮箱</span>
-              <input type="text" />
-              <span class="message"><a href="#">获取验证码</a></span>
+              <input type="text" v-model="user_proving.account" />
+              <span @click.stop.prevent="fun_get_recode" class="message"><a href="#">获取验证码</a></span>
             </div>
             <div class="wrapper2">
               <span class="name">验证码</span>
@@ -58,13 +58,13 @@
     <transition name="register_code_find">
       <div v-if="is_register_code_find_show" class="register_code_find">
         <div class="wrapper">
-          <div class="title">用户注册</div>
+          <div class="title">{{message_register_code}}</div>
           <div class="register_content">
-            <div class="wrapper_2"><span>邮箱</span><input type="text"></div>
-            <div class="wrapper_2"><span>设置密码</span><input type="text"></div>
-            <div class="wrapper_2"><span>确认密码</span><input type="text"></div>
+            <div class="wrapper_2"><span>邮箱</span><input v-model="user_proving.account" type="text"></div>
+            <div class="wrapper_2"><span>设置密码</span><input v-model="user_proving.password" type="text"></div>
+            <div class="wrapper_2"><span>确认密码</span><input v-model="user_proving.password_ok" type="text"></div>
             <div class="btn">
-              <span><a href="#">确定</a></span>
+              <span @click.stop.prevent="fun_register_code"><a href="#">确定</a></span>
               <span @click.stop.prevent="is_register_code_find_show = false"><a href="#">取消</a></span>
             </div>
           </div>
@@ -77,12 +77,26 @@
 import tip from "../tip/tip.vue"
 import prompt from "../prompt/prompt.vue"
 export default {
+  props: ["user_status"],
   data() {
       return {
           is_tip_show: false,
           is_prompt_show: false,
+          prompt_message: "",
           is_mailbox_check_show: false,
-          is_register_code_find_show: true
+          is_register_code_find_show: false,
+          user: {
+            account: "",
+            password: ""
+          },
+          option: 0,
+          message_register_code: "",
+          user_proving: {
+            account: "",
+            recode: "",
+            password: "",
+            password_ok: ""
+          }
       }
     }, 
     components: {
@@ -97,7 +111,113 @@ export default {
         this.is_prompt_show = false
       },
       fun_log_in() {
-       this.$router.push({name: 'home_page'})
+        if (this.user.account !== "" && this.user.password !== "") {
+          let that = this
+            let option = {}
+            option.withCredentials = true
+            option.url = '/logIn'
+            option.data = this.user
+            option.method = "put"
+            
+            that.$http(option)
+            .then((response) => {
+                if (response.data.id !== -1) {
+                    // that.datas.user = response.data
+                    that.user_status.is_login = true
+                    that.$router.push({name: 'home_page'})
+                }
+                else {
+                    that.prompt_message = response.data.value
+                    that.is_prompt_show = true
+                }
+            },
+            (fileData) => { 
+                that.prompt_message = '网络请求发送失败'
+                that.is_prompt_show = true
+            })
+        } else {
+          this.prompt_message = "请将账户信息填写完整"
+          this.is_prompt_show = true
+        }
+      },
+      fun_get_recode() {
+        if (this.user_proving.account === "") {
+            this.prompt_message = "请输入邮箱"
+            this.is_prompt_show = true
+        } else {
+          let option = {}
+          let accounts = {}
+          let that = this
+          accounts.account = this.user_proving.account
+          option.method = 'put'
+          option.data = accounts
+          option.headers = {"Content-Type": "application/json;charset=utf-8"}
+          option.withCredentials = true
+          if (this.option === 0) {
+              option.url = "/unusedgoods/logIn_account_proving_new"
+          }
+          else option.url = "/unusedgoods/logIn_account_proving_code"
+          this.$http(option).then(function (successData) {
+                if (successData.data.id === -1) {
+                    that.prompt_message = successData.data.value
+                } else {
+                    that.prompt_message = "已发送"
+                    if (that.option === 0) {
+                      that.message_register_code = "用户注册"
+                      that.is_register_code_find_show = true
+                    } else {
+                      that.message_register_code = "重设密码"
+                    }
+                    that.is_register_code_find_show = true
+                    that.is_mailbox_check_show = false
+                }  
+                that.is_prompt_show = true             
+                }
+                ,(fileData) => { 
+                  that.prompt_message = '网络请求发送失败'
+                  that.is_prompt_show = true
+                })
+        }
+      },
+      fun_register_code() {
+        let that = this
+        if (this.user_proving.password === this.user_proving.password_ok && this.user_proving.password !== '') {
+          let option = {}
+          let data = {}
+          data.account = this.user_proving.account
+          data.password = this.user_proving.password
+          option.data = data
+          option.method = 'put'
+          if (this.option === 0) {
+              option.url = "/unusedgoods/logIn__new"
+          }
+          else option.url = "/unusedgoods/logIn_code"
+          this.$http(option).then(function (successData) {
+                  if (successData.data.id === 1) {
+                      that.is_register_code_find_show = false
+                      if (that.option === 0) {
+                          that.prompt_message = "注册成功" 
+                      } else {
+                          that.prompt_message = "修改成功"
+                      }
+                  } else {
+                      that.prompt_message = successData.data.value
+                  }
+                  that.is_prompt_show = true },
+                  (fileData) => { 
+                    that.prompt_message = '网络请求发送失败'
+                    that.is_prompt_show = true
+                  })
+              }
+        else {
+            if (this.user_proving.password === '' || this.user_proving.password_ok === '') {
+              that.prompt_message = "请输入完整信息"
+            }
+            else if (this.user_proving.password !== this.user_proving.password_ok) {
+                that.prompt_message = "密码不一致"
+            }
+            that.is_prompt_show = true
+        }
       }
     }
 }
