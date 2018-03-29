@@ -2,29 +2,50 @@
   <div id="user_collection_item">
     <div class="wrapper">
       <div class="img_wrapper">
-        <a href="#" @click.stop.prevent="fun_goto_detail"><img src="./a608f8dc739b3343c33660e4f502d281.jpeg" /></a>
-        <div v-if="false" class="cover">
+        <a href="#" @click.stop.prevent="fun_goto_detail"><img :src="data.imageUrl" /></a>
+        <div v-if="is_up_sell" class="cover">
           <span>已下架</span>
         </div>
       </div>
       <div class="content_wrapper">
         <div class="message">
-          <div class="name">檀木灯泡</div>
+          <div class="name">{{data.name}}</div>
           <div class="price">
-            <span class="new">$ 55</span>
-            <span class="old">$ 105</span>
+            <span class="new">$ {{data.price}}</span>
+            <span class="old">$ {{data.originalPrice}}</span>
           </div>
         </div>
-        <div class="btn delete"><a href=""><i class="el-icon-delete"></i>取消收藏</a></div>
+        <div @click.stop.prevent="delete1" class="btn delete"><a href=""><i class="el-icon-delete"></i>取消收藏</a></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
+  props: ["data","is_up_sell","data_1"],
    methods: {
      fun_goto_detail() {
        this.$router.push({name: 'goods_detail'})
+     },
+     delete1() {
+      let that = this
+      let option = {}
+      option.method = 'get'
+      option.headers = {"Content-Type": "application/json;charset=utf-8"}    
+      option.url = '/unusedgoods/user_save_delete?id=' + that.data.id
+      option.withCredentials = true
+
+      this.$http(option).then(function (successData) {
+          if (successData.data.id !== -1) {
+              that.data_1.prompt_message = "取消收藏成功！"
+          }
+          else that.data_1.prompt_messager = "服务器君不玩了！"
+          that.data_1.is_prompt_show = true
+      },
+      (fileData) => {
+          that.data_1.prompt_message = '网络请求发送失败'
+          that.data_1.is_prompt_show = true
+        })
      }
    }
 }

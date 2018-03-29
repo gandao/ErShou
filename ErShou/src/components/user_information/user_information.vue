@@ -3,7 +3,7 @@
       <div class="title1">用户详情</div>
      <div class="user_img">
          <span class="title3">头像</span>
-         <img src="./user_head.jpg"/>
+         <img :src="user.headImageUrl"/>
          <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -35,6 +35,7 @@
 </template>
 <script>
 export default {
+    props: ["data"],
     data() {
         return {
             user: {}
@@ -42,11 +43,48 @@ export default {
     },
     methods: {
         Submit() {
-            this.confirm_show = true
+            var that = this
+            var fd = new FormData()
+            fd.append('nickname',that.user.nickname)
+            fd.append('qq',that.user.qq)
+            fd.append('phone',that.user.phone)
+            fd.append('weixin',that.user.weixin)
+            // fd.append('nickname',that.user.nickname)
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            that.$http.post('/unusedgoods/user_feedback', fd,config).then(res => {
+                console.log(res)
+            }).catch(res => {
+                console.log(res)
+            })
         },
         confirm_fun() {
             this.confirm_show = false
         }
+    },
+    created() {
+        let that = this
+        let option = {}
+        option.method = 'get'
+        option.headers = {"Content-Type": "application/json;charset=utf-8"}    
+        option.url = '/unusedgoods/user_detail'
+        option.withCredentials = true
+        this.$http(option).then(function (successData) {
+        that.$nextTick(() => {
+            if (successData.data.id === -1) {
+                that.data.prompt_message = successData.data.value
+                that.data.is_prompt_show = true
+            }
+            else that.user = successData.data
+        })
+      },
+      (fileData) => {
+          that.data.prompt_message = '网络请求发送失败'
+          that.data.is_prompt_show = true
+        })
     }
 }
 </script>

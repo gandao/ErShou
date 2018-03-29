@@ -2,7 +2,7 @@
   <div id="user_goods">
     <div class="btn_wrapper"><span @click.stop.prevent="fun_btn(0)" :class="{'selected': btn_index === 0}"><a href="#">在热卖的</a></span ><span @click.stop.prevent="fun_btn(1)" :class="{'selected': btn_index === 1}"><a href="#">以下架的</a></span></div>
     <ul class="content_2">
-      <li v-for="(item,index) in user_goods" :key="index"><user-goods-item :is_on_sell="btn_index" :data="item"></user-goods-item></li>
+      <li v-for="(item,index) in user_goods" :key="index"><user-goods-item v-on:delete="delete1" :good_item="good_item" :data_1="data" :is_on_sell="btn_index" :data="item"></user-goods-item></li>
       </ul>
     <div v-if="pager_show" class="pager">
           <el-pagination
@@ -25,6 +25,9 @@ export default {
     return {
       pager_show: false,
       user_goods: [],
+      good_item: {
+        id: 0
+      },
       now_page: 0,
       all_page: 0,
       btn_index: 0,
@@ -66,6 +69,14 @@ export default {
           this.btn_index = index
           this.search1(0)
         }
+    },
+    delete1() {
+      for (var i = 0; i < user_goods.length; i++) {
+        if (user_goods[i].id === goods_item.id) {
+          user_goods.splice(i,1)
+          break
+        }
+      }
     }
    }
 }

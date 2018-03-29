@@ -28,10 +28,10 @@
       </div>
     </div>
     <transition name="toggle">
-      <div v-if="is_tip_show" class="tip_wrapper" ><tip v-on:toggle="fun_tip"></tip></div>    
+      <div v-if="data.is_tip_show" class="tip_wrapper" ><tip :data = "data" v-on:toggle="fun_tip"></tip></div>    
     </transition>
     <transition name="toggle">
-      <div v-if="is_prompt_show" class="prompt_wrapper" ><prompt :message="data.prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
+      <div v-if="data.is_prompt_show" class="prompt_wrapper" ><prompt :message="data.prompt_message" v-on:toggle_prompt="fun_prompt"></prompt></div>    
     </transition>
   </div>
 </template>
@@ -41,11 +41,12 @@ import prompt from "../prompt/prompt.vue"
 export default {
   data() {
     return {
-      is_tip_show: false,
-      is_prompt_show: false,
       data: {
         tip_message: "",
-        prompt_message: ""
+        prompt_message: "",
+        tip: false,
+        is_tip_show: false,
+        is_prompt_show: false
       },
       menu_selected: [false,false,false,false,false,false],
       menu_item: ["user_goods","user_add_goods","user_information","user_message","user_collection","user_feedback"]
@@ -56,16 +57,16 @@ export default {
         this.$router.push({name: this.menu_item[index]})
       },
       fun_tip() {
-        this.is_tip_show = !this.is_tip_show
+        this.data.is_tip_show = !this.data.is_tip_show
       },
       fun_prompt() {
-        this.is_prompt_show = false
+        this.data.is_prompt_show = false
       },
       tip_show() {
-        this.is_tip_show = true
+        this.data.is_tip_show = true
       },
       prompt_show() {
-        this.is_prompt_show = true
+        this.data.is_prompt_show = true
       }
    },
    watch: {

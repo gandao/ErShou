@@ -4,8 +4,8 @@
       <div class="title">请确认</div>
       <div class="content3">
         <div class="btn_wrapper">
-          <span class="btn1" @click.stop.prevent="fun_btn"><a href="#">确定</a></span>
-          <span class="btn1" @click.stop.prevent="fun_btn"><a href="#">取消</a></span>
+          <span class="btn1" @click.stop.prevent="fun_btn(1)"><a href="#">确定</a></span>
+          <span class="btn1" @click.stop.prevent="fun_btn(0)"><a href="#">取消</a></span>
         </div>
       </div>
     </div>
@@ -13,8 +13,14 @@
 </template>
 <script>
 export default {
+  props: ["data"],
   methods: {
-    fun_btn() {
+    fun_btn(index) {
+      if (index) {
+        this.data.tip = true
+      } else {
+        this.data.tip = false
+      }
       this.$emit('toggle')
     }
   }

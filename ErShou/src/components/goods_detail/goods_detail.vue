@@ -127,8 +127,8 @@ export default {
             let data = {}
             let that = this
             data.id = this.goods.ownerId
-            data.content = this.user_message
-            option.data = data
+            data.content = "关于商品" + goods.name + "的留言：" + this.user_message 
+            option.data.id = data
             option.method = "put"
             option.url = '/unusedgoods/add_userdlg'
             that.$http(option).then(function (successData) {

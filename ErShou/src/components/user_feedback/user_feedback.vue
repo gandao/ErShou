@@ -21,8 +21,8 @@ export default {
     confirm_fun() {
       let that = this
       let option = {}
-      option.method = "put"
-      option.url = '/user_feedback'
+      option.method = "post"
+      option.url = '/unusedgoods/user_feedback'
       option.data = {}
       option.data.content = this.user_feedback
       if (this.user_feedback === '') {

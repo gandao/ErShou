@@ -17,22 +17,67 @@
         </div>
         <div v-if="!is_on_sell" class="btn">
           <span><a href="#">修改</a></span>
-          <span><a href="#">下架</a></span>
-          <span><a href="#">出售</a></span>
+          <span @click.stop.prevent="up_goods(0)"><a href="#">下架</a></span>
+          <span @click.stop.prevent="up_goods(1)"><a href="#">出售</a></span>
         </div>
-        <div  v-else class="btn delete"><a href=""><i class="el-icon-delete"></i>删除</a></div>
+        <div @click.stop.prevent="delete1" v-else class="btn delete"><a href=""><i class="el-icon-delete"></i>删除</a></div>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
-  props: ["data","is_on_sell"],
+  props: ["data","is_on_sell","data_1","good_item"],
+  created() {
+    this.good_item.id = this.data.id
+  },
   methods: {
      fun_goto_detail() {
        this.$router.push({name: 'goods_detail'}, {query: { 'id': this.data.id }})
      },
-     delete() {
+     delete1() {
+        let that = this
+        let option = {}
+        option.method = 'get'
+        option.headers = {"Content-Type": "application/json;charset=utf-8"}    
+        option.url = '/unusedgoods/user_goods_delete?id=' + this.data.id
+        option.withCredentials = true
+        this.$http(option).then(function (successData) {
+            if (successData.data.id !== -1) {
+                that.data_1.prompt_message = '删除成功'
+                that.$emit('delete')
+            }
+            else that.data_1.prompt_message = '服务器君不玩了！'
+            that.data_1.is_prompt_show = true
+        },(fileData) => {
+          that.data_1.prompt_message = '网络请求发送失败'
+          that.data_1.is_prompt_show = true
+        })
+     },
+     up_goods(index) {
+      let that = this
+      let option = {}
+      option.method = 'get'
+      option.headers = {"Content-Type": "application/json;charset=utf-8"}    
+      option.url = '/unusedgoods/user_goods_up?id=' + this.data.id
+      option.withCredentials = true
+      this.$http(option).then(function (successData) {
+          if (successData.data.id !== -1) {
+              if (index === 1) {
+                  that.data_1.prompt_message = '售出成功'
+              }
+              else that.data_1.prompt_message = '下架成功'
+              that.data_1.is_prompt_show = true
+              that.is_on_sell = 1
+          }
+          else {
+              that.data_1.prompt_message = successData.data.value
+              that.data_1.is_prompt_show = true
+          }
+      },(fileData) => {
+          that.data_1.prompt_message = '网络请求发送失败'
+          that.data_1.is_prompt_show = true
+        })
      }
    }
 }

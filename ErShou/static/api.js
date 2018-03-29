@@ -27,11 +27,11 @@ var api = {
       '^/add_user_recode': ''    //需要rewrite重写
     }
    },
-   '/user_feedback': {
+   '/unusedgoods/user_feedback': {
     target: 'http://localhost:8080/unusedgoods/suggestion_submit',//接口域名
     changeOrigin: true,//是否跨域ev
     pathRewrite: {
-      '^/user_feedback': ''    //需要rewrite重写
+      '^/unusedgoods/user_feedback': ''    //需要rewrite重写
     }
    },
    '/unusedgoods/user_detail': {
@@ -159,6 +159,20 @@ var api = {
     changeOrigin: true,//是否跨域ev
     pathRewrite: {
       '^/unusedgoods/user_islogin': ''    //需要rewrite重写
+    }
+   },
+   '/unusedgoods/message_delete': {
+    target: 'http://localhost:8080/unusedgoods/user_deleteDialog',//接口域名
+    changeOrigin: true,//是否跨域ev
+    pathRewrite: {
+      '^/unusedgoods/message_delete': ''    //需要rewrite重写
+    }
+   },
+   '/unusedgoods/message_fackback': {
+    target: 'http://localhost:8080/unusedgoods/user_reply ',//接口域名
+    changeOrigin: true,//是否跨域ev
+    pathRewrite: {
+      '^/unusedgoods/message_fackback': ''    //需要rewrite重写
     }
    }
 }
