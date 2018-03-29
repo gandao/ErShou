@@ -1,36 +1,32 @@
 <template>
   <div id="user_information">
+      <form ref= "uploadForm" action= "/unusedgoods/user_feedback" method= "post" enctype ="multipart/form-data">  
       <div class="title1">用户详情</div>
-     <div class="user_img">
+        <div class="user_img">
          <span class="title3">头像</span>
          <img :src="user.headImageUrl"/>
-         <el-upload
-            class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload>
+         <input class="file" ref="file" name="headImageUrl" type="file" />
      </div>
      <div class="name">
          <span class="title3">昵称</span>
-         <input v-model="user.nickname" type="text" />
+         <input v-model="user.nickname" name="nickname" type="text" />
      </div>
      <div class="qq">
          <span class="title3">QQ</span>
-         <input v-model="user.qq" type="number" />
+         <input v-model="user.qq" name="qq" type="number" />
      </div>
      <div class="tel">
          <span class="title3">TEL</span>
-         <input v-model="user.phone" type="number" />
+         <input v-model="user.phone" name="phone" type="number" />
      </div>
      <div class="wechart">
          <span class="title3">微信</span>
-         <input v-model="user.weixin" type="text" />
+         <input v-model="user.weixin" name="weixin" type="text" />
      </div>
-     <div class="btn" @click.stop.prevent="Submit">
-         <span><a href="#">保存修改</a></span>
-     </div>
+        <div class="btn" @click.stop.prevent="Submit">
+            <span><a href="#">保存修改</a></span>
+        </div>
+      </form>
   </div>
 </template>
 <script>
@@ -38,18 +34,14 @@ export default {
     props: ["data"],
     data() {
         return {
-            user: {}
+            user: {},
+            imageUrl: ""
         }
     },
     methods: {
         Submit() {
             var that = this
-            var fd = new FormData()
-            fd.append('nickname',that.user.nickname)
-            fd.append('qq',that.user.qq)
-            fd.append('phone',that.user.phone)
-            fd.append('weixin',that.user.weixin)
-            // fd.append('nickname',that.user.nickname)
+            var fd = new FormData(that.$refs.uploadForm)
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -121,12 +113,13 @@ export default {
         color: #605f61;
     }
     .user_img{
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         .title3{
             line-height: 60px;
             vertical-align: top;
         }
         img{
+            vertical-align: top;
             padding: 2px;
             border: 1px solid @main_color;
             display: inline-block;
@@ -134,22 +127,10 @@ export default {
             height: 60px;
             box-sizing: border-box;
         }
-        .img_btn{
-            margin-left: 20px;
-            a{
-                color: @main_color; 
-                font-size: 0.8em;
-                padding: 3px 6px;
-                border: 1px solid @main_color;
-                border-radius: 3px;
-                vertical-align: top;
-                line-height: 60px;
-                i{
-                    vertical-align: top;
-                    line-height: 60px;
-                }
-            }
-            
+        .file{
+            border: none;
+             margin-left: 20px;
+             font-size: 12px;
         }
         .avatar-uploader{
             display: inline-block;
